@@ -433,21 +433,21 @@ function init() {
   }
 
   buttons.startButton = new Button(
-    new Vector(canvas.width / 2 - 50, canvas.height - 100),
-    100,
-    40,
+    new Vector(0, TILE_SIZE * 15),
+    TILE_SIZE * 3,
+    TILE_SIZE * 1.5,
     "Start"
   );
   buttons.pauseButton = new Button(
-    new Vector(canvas.width / 2 + 150, canvas.height - 100),
-    100,
-    40,
+    new Vector(TILE_SIZE * 4, TILE_SIZE * 15),
+    TILE_SIZE * 3,
+    TILE_SIZE * 1.5,
     "Pause"
   );
   buttons.addRightRampButton = new Button(
-    new Vector(canvas.width / 2 + 300, canvas.height - 100),
-    100,
-    40,
+    new Vector(TILE_SIZE * 8, TILE_SIZE * 15),
+    TILE_SIZE * 3,
+    TILE_SIZE * 1.5,
     "/"
   );
 
