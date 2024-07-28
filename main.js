@@ -357,7 +357,7 @@ function addInteractionHandling() {
         );
       }
 
-      if (buttons.addRightRampButton.isPressed) {
+      if (buttons.addRightRampButton.isPressed && !addingRightRamp) {
         buttons.addRightRampButton.isPressed = isPointInRect(
           pointer,
           buttons.addRightRampButton
