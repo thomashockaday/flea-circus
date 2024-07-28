@@ -266,10 +266,6 @@ function runAnimation() {
     ctx.fill();
   }
 
-  walls.forEach((wall) => {
-    wall.draw(ctx);
-  });
-
   // entrance
   ctx.fillStyle = "green";
   ctx.fillRect(TILE_SIZE, TILE_SIZE, TILE_SIZE, TILE_SIZE);
@@ -284,6 +280,10 @@ function runAnimation() {
     ctx.lineTo(ramp.position.x + TILE_SIZE / 8, ramp.position.y + TILE_SIZE);
     ctx.lineTo(ramp.position.x, ramp.position.y + TILE_SIZE);
     ctx.fill();
+  });
+
+  walls.forEach((wall) => {
+    wall.draw(ctx);
   });
 
   fleas.forEach((flea) => {
@@ -332,21 +332,6 @@ function addInteractionHandling() {
 
       if (buttons.pauseButton.isPressed) {
         buttons.pauseButton.text = paused ? "Pause" : "Play";
-      }
-
-      if (
-        addingRightRamp &&
-        pointer.x < TILE_SIZE * 12 &&
-        pointer.y < TILE_SIZE * 14
-      ) {
-        rightRamps.push({
-          position: {
-            x: event.offsetX - (event.offsetX % TILE_SIZE),
-            y: event.offsetY - (event.offsetY % TILE_SIZE),
-          },
-          width: TILE_SIZE,
-          height: TILE_SIZE,
-        });
       }
     },
     false
@@ -405,6 +390,7 @@ function addInteractionHandling() {
         pointer,
         buttons.pauseButton
       );
+
       if (buttons.pauseButton.isPressed) {
         if (paused) {
           startAnimation();
@@ -420,6 +406,21 @@ function addInteractionHandling() {
         pointer,
         buttons.addRightRampButton
       );
+
+      if (
+        addingRightRamp &&
+        pointer.x < TILE_SIZE * 12 &&
+        pointer.y < TILE_SIZE * 14
+      ) {
+        rightRamps.push({
+          position: {
+            x: event.offsetX - (event.offsetX % TILE_SIZE),
+            y: event.offsetY - (event.offsetY % TILE_SIZE),
+          },
+          width: TILE_SIZE,
+          height: TILE_SIZE,
+        });
+      }
 
       addingRightRamp = buttons.addRightRampButton.isPressed;
       buttons.addRightRampButton.isPressed = false;
