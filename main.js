@@ -312,6 +312,9 @@ function addInteractionHandling() {
   canvas.addEventListener(
     "pointerdown",
     (event) => {
+      pointer.x = event.offsetX;
+      pointer.y = event.offsetY;
+
       buttons.startButton.isPressed = isPointInRect(
         pointer,
         buttons.startButton
@@ -382,6 +385,9 @@ function addInteractionHandling() {
   canvas.addEventListener(
     "pointerup",
     (event) => {
+      pointer.x = event.offsetX;
+      pointer.y = event.offsetY;
+
       // start
       buttons.startButton.isPressed = isPointInRect(
         pointer,
