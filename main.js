@@ -1,5 +1,6 @@
 import { Button } from "./src/Button";
 import { Flea } from "./src/Flea";
+import { RightRamp } from "./src/RightRamp";
 import { Vector } from "./src/Vector";
 import { Wall } from "./src/Wall";
 
@@ -30,12 +31,13 @@ let canvas;
  */
 let ctx;
 
-const pointer = {
-  x: 0,
-  y: 0,
-};
+const pointer = new Vector(0, 0);
 
 const buttons = {};
+
+/**
+ * @type {RightRamp[]}
+ */
 const rightRamps = [];
 
 /**
@@ -270,16 +272,8 @@ function runAnimation() {
   ctx.fillStyle = "green";
   ctx.fillRect(TILE_SIZE, TILE_SIZE, TILE_SIZE, TILE_SIZE);
 
-  // right ramps
   rightRamps.forEach((ramp) => {
-    ctx.fillStyle = "pink";
-    ctx.beginPath();
-    ctx.moveTo(ramp.position.x, ramp.position.y + TILE_SIZE);
-    ctx.lineTo(ramp.position.x + TILE_SIZE, ramp.position.y);
-    ctx.lineTo(ramp.position.x + TILE_SIZE, ramp.position.y + TILE_SIZE / 8);
-    ctx.lineTo(ramp.position.x + TILE_SIZE / 8, ramp.position.y + TILE_SIZE);
-    ctx.lineTo(ramp.position.x, ramp.position.y + TILE_SIZE);
-    ctx.fill();
+    ramp.draw(ctx);
   });
 
   walls.forEach((wall) => {
@@ -299,6 +293,11 @@ function runAnimation() {
   frameId = window.requestAnimationFrame(runAnimation);
 }
 
+/**
+ * @param {Vector} point
+ * @param {*} rect
+ * @returns {boolean}
+ */
 function isPointInRect(point, rect) {
   return (
     point.x >= rect.position.x &&
@@ -412,14 +411,16 @@ function addInteractionHandling() {
         pointer.x < TILE_SIZE * 12 &&
         pointer.y < TILE_SIZE * 14
       ) {
-        rightRamps.push({
-          position: {
-            x: event.offsetX - (event.offsetX % TILE_SIZE),
-            y: event.offsetY - (event.offsetY % TILE_SIZE),
-          },
-          width: TILE_SIZE,
-          height: TILE_SIZE,
-        });
+        rightRamps.push(
+          new RightRamp(
+            {
+              x: event.offsetX - (event.offsetX % TILE_SIZE),
+              y: event.offsetY - (event.offsetY % TILE_SIZE),
+            },
+            TILE_SIZE,
+            TILE_SIZE
+          )
+        );
       }
 
       addingRightRamp = buttons.addRightRampButton.isPressed;
