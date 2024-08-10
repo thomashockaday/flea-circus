@@ -1,17 +1,6 @@
-import { Vector } from "./Vector";
+import { Body } from "./core/Body";
 
-export class Wall {
-  /**
-   * @param {Vector} position
-   * @param {number} width
-   * @param {number} height
-   */
-  constructor(position, width, height) {
-    this.position = position;
-    this.width = width;
-    this.height = height;
-  }
-
+export class Wall extends Body {
   /**
    * @param {CanvasRenderingContext2D} ctx
    */

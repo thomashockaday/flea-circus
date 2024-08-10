@@ -1,15 +1,14 @@
-import { Vector } from "./Vector";
+import { Body } from "./core/Body";
+import { Vector } from "./core/Vector";
 
-export class Flea {
+export class Flea extends Body {
   /**
    * @param {Vector} position
    * @param {number} width
    * @param {number} height
    */
   constructor(position, width, height) {
-    this.position = position;
-    this.width = width;
-    this.height = height;
+    super(position, width, height);
 
     this.velocity = new Vector(0, 0);
 

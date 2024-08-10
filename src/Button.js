@@ -1,6 +1,7 @@
-import { Vector } from "./Vector";
+import { Body } from "./core/Body";
+import { Vector } from "./core/Vector";
 
-export class Button {
+export class Button extends Body {
   /**
    * @param {Vector} position
    * @param {number} width
@@ -8,9 +9,8 @@ export class Button {
    * @param {string} text
    */
   constructor(position, width, height, text) {
-    this.position = position;
-    this.width = width;
-    this.height = height;
+    super(position, width, height);
+
     this.text = text;
 
     this.isPressed = false;

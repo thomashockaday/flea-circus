@@ -1,8 +1,8 @@
 import { Button } from "./src/Button";
 import { Flea } from "./src/Flea";
 import { RightRamp } from "./src/RightRamp";
-import { Vector } from "./src/Vector";
 import { Wall } from "./src/Wall";
+import { Vector } from "./src/core/Vector";
 
 // todo
 

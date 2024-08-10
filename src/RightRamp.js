@@ -1,15 +1,6 @@
-export class RightRamp {
-  /**
-   * @param {Vector} position
-   * @param {number} width
-   * @param {number} height
-   */
-  constructor(position, width, height) {
-    this.position = position;
-    this.width = width;
-    this.height = height;
-  }
+import { Body } from "./core/Body";
 
+export class RightRamp extends Body {
   /**
    * @param {CanvasRenderingContext2D} ctx
    */
