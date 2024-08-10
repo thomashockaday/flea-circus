@@ -3,6 +3,7 @@ import { Entrance } from "./src/Entrance";
 import { Flea } from "./src/Flea";
 import { RightRamp } from "./src/RightRamp";
 import { Wall } from "./src/Wall";
+import { Body } from "./src/core/Body";
 import { Vector } from "./src/core/Vector";
 
 // todo
@@ -244,21 +245,16 @@ function runAnimation() {
     pointer.x < TILE_SIZE * 12 &&
     pointer.y < TILE_SIZE * 14
   ) {
-    const ramp = {
-      position: {
-        x: pointer.x - (pointer.x % TILE_SIZE),
-        y: pointer.y - (pointer.y % TILE_SIZE),
-      },
-    };
+    const ramp = new RightRamp(
+      new Vector(
+        pointer.x - (pointer.x % TILE_SIZE),
+        pointer.y - (pointer.y % TILE_SIZE)
+      ),
+      TILE_SIZE,
+      TILE_SIZE
+    );
 
-    ctx.fillStyle = "pink";
-    ctx.beginPath();
-    ctx.moveTo(ramp.position.x, ramp.position.y + TILE_SIZE);
-    ctx.lineTo(ramp.position.x + TILE_SIZE, ramp.position.y);
-    ctx.lineTo(ramp.position.x + TILE_SIZE, ramp.position.y + TILE_SIZE / 8);
-    ctx.lineTo(ramp.position.x + TILE_SIZE / 8, ramp.position.y + TILE_SIZE);
-    ctx.lineTo(ramp.position.x, ramp.position.y + TILE_SIZE);
-    ctx.fill();
+    ramp.draw(ctx);
   }
 
   entrance.draw(ctx);
@@ -286,7 +282,7 @@ function runAnimation() {
 
 /**
  * @param {Vector} point
- * @param {*} rect
+ * @param {Body} rect
  * @returns {boolean}
  */
 function isPointInRect(point, rect) {
