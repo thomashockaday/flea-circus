@@ -1,4 +1,5 @@
 import { Button } from "./src/Button";
+import { Entrance } from "./src/Entrance";
 import { Flea } from "./src/Flea";
 import { RightRamp } from "./src/RightRamp";
 import { Wall } from "./src/Wall";
@@ -60,10 +61,12 @@ const walls = [
   new Wall(new Vector(0, TILE_SIZE * 8), TILE_SIZE * 5, TILE_SIZE),
 ];
 
-const entrance = {
-  direction: "down",
-  position: new Vector(TILE_SIZE, TILE_SIZE),
-};
+const entrance = new Entrance(
+  new Vector(TILE_SIZE, TILE_SIZE),
+  TILE_SIZE,
+  TILE_SIZE,
+  "down"
+);
 /**
  * @type {Flea[]}
  */
@@ -101,17 +104,7 @@ function runAnimation() {
     const fleasOutOfPlay = fleas.filter((flea) => flea.inPlay === false);
 
     if (fleasOutOfPlay.length > 0 && frameId % 30 === 0) {
-      const firstFleaOutOfPlay = fleasOutOfPlay[0];
-      firstFleaOutOfPlay.inPlay = true;
-
-      if (entrance.direction === "down") {
-        firstFleaOutOfPlay.position.x =
-          entrance.position.x + (TILE_SIZE - firstFleaOutOfPlay.width) / 2;
-        firstFleaOutOfPlay.position.y =
-          entrance.position.y + TILE_SIZE + firstFleaOutOfPlay.height;
-      } else {
-        throw "Entrance direction is not handled";
-      }
+      entrance.spawn(fleasOutOfPlay[0]);
     }
   }
 
@@ -268,9 +261,7 @@ function runAnimation() {
     ctx.fill();
   }
 
-  // entrance
-  ctx.fillStyle = "green";
-  ctx.fillRect(TILE_SIZE, TILE_SIZE, TILE_SIZE, TILE_SIZE);
+  entrance.draw(ctx);
 
   rightRamps.forEach((ramp) => {
     ramp.draw(ctx);
