@@ -118,11 +118,9 @@ function runAnimation() {
     /**
      * @type {CollisionMap[]}
      */
-    const wallCollisions = [];
-
-    walls.forEach((wall) => {
-      wallCollisions.push(Collision.getRectRectCollision(wall, fleas[i]));
-    });
+    const wallCollisions = walls.map((wall) =>
+      Collision.getRectRectCollision(wall, fleas[i])
+    );
 
     const rightRampCollisions = {
       top: false,
