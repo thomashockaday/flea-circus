@@ -5,6 +5,7 @@ import { RightRamp } from "./src/RightRamp";
 import { Wall } from "./src/Wall";
 import { Body } from "./src/core/Body";
 import { Vector } from "./src/core/Vector";
+import { Collision } from "./src/core/Collision";
 
 // todo
 
@@ -280,20 +281,6 @@ function runAnimation() {
   frameId = window.requestAnimationFrame(runAnimation);
 }
 
-/**
- * @param {Vector} point
- * @param {Body} rect
- * @returns {boolean}
- */
-function isPointInRect(point, rect) {
-  return (
-    point.x >= rect.position.x &&
-    point.x <= rect.position.x + rect.width &&
-    point.y >= rect.position.y &&
-    point.y <= rect.position.y + rect.height
-  );
-}
-
 function addInteractionHandling() {
   canvas.addEventListener(
     "pointerdown",
@@ -301,17 +288,17 @@ function addInteractionHandling() {
       pointer.x = event.offsetX;
       pointer.y = event.offsetY;
 
-      buttons.startButton.isPressed = isPointInRect(
+      buttons.startButton.isPressed = Collision.isPointInRect(
         pointer,
         buttons.startButton
       );
 
-      buttons.pauseButton.isPressed = isPointInRect(
+      buttons.pauseButton.isPressed = Collision.isPointInRect(
         pointer,
         buttons.pauseButton
       );
 
-      buttons.addRightRampButton.isPressed = isPointInRect(
+      buttons.addRightRampButton.isPressed = Collision.isPointInRect(
         pointer,
         buttons.addRightRampButton
       );
@@ -330,21 +317,21 @@ function addInteractionHandling() {
       pointer.y = event.offsetY;
 
       if (buttons.startButton.isPressed) {
-        buttons.startButton.isPressed = isPointInRect(
+        buttons.startButton.isPressed = Collision.isPointInRect(
           pointer,
           buttons.startButton
         );
       }
 
       if (buttons.pauseButton.isPressed) {
-        buttons.pauseButton.isPressed = isPointInRect(
+        buttons.pauseButton.isPressed = Collision.isPointInRect(
           pointer,
           buttons.pauseButton
         );
       }
 
       if (buttons.addRightRampButton.isPressed && !addingRightRamp) {
-        buttons.addRightRampButton.isPressed = isPointInRect(
+        buttons.addRightRampButton.isPressed = Collision.isPointInRect(
           pointer,
           buttons.addRightRampButton
         );
@@ -360,7 +347,7 @@ function addInteractionHandling() {
       pointer.y = event.offsetY;
 
       // start
-      buttons.startButton.isPressed = isPointInRect(
+      buttons.startButton.isPressed = Collision.isPointInRect(
         pointer,
         buttons.startButton
       );
@@ -372,7 +359,7 @@ function addInteractionHandling() {
       buttons.startButton.isPressed = false;
 
       // pause
-      buttons.pauseButton.isPressed = isPointInRect(
+      buttons.pauseButton.isPressed = Collision.isPointInRect(
         pointer,
         buttons.pauseButton
       );
@@ -388,7 +375,7 @@ function addInteractionHandling() {
       buttons.pauseButton.isPressed = false;
 
       // add right ramp
-      buttons.addRightRampButton.isPressed = isPointInRect(
+      buttons.addRightRampButton.isPressed = Collision.isPointInRect(
         pointer,
         buttons.addRightRampButton
       );
