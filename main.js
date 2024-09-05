@@ -161,7 +161,7 @@ function runAnimation() {
     }
 
     // cancel forward movement when falling
-    if (!wallCollisions.some((col) => col.top)) {
+    if (!wallCollisions.some((col) => col.top || col.bottom)) {
       fleas[i].velocity.x = 0;
     }
 
@@ -171,14 +171,18 @@ function runAnimation() {
         fleas[i].velocity.y = 0;
       }
 
-      // bounce off left side of wall and go backwards
-      if (wallCollisions[j].left) {
-        fleas[i].velocity.x = -1;
-      }
-
       // bounce off right side of wall and go forwards
       if (wallCollisions[j].right) {
         fleas[i].velocity.x = 1;
+      }
+
+      if (wallCollisions[j].bottom) {
+        fleas[i].velocity.y = 0;
+      }
+
+      // bounce off left side of wall and go backwards
+      if (wallCollisions[j].left) {
+        fleas[i].velocity.x = -1;
       }
     }
 
