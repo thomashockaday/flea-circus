@@ -3,9 +3,9 @@ import { Entrance } from "./src/Entrance";
 import { Flea } from "./src/Flea";
 import { RightRamp } from "./src/RightRamp";
 import { Wall } from "./src/Wall";
-import { Body } from "./src/core/Body";
-import { Vector } from "./src/core/Vector";
 import { Collision } from "./src/core/Collision";
+import { CollisionMap } from "./src/core/CollisionMap";
+import { Vector } from "./src/core/Vector";
 
 // todo
 
@@ -115,36 +115,13 @@ function runAnimation() {
       continue;
     }
 
-    const wallCollisions = {
-      top: false,
-      right: false,
-      left: false,
-    };
+    /**
+     * @type {CollisionMap[]}
+     */
+    const wallCollisions = [];
 
     walls.forEach((wall) => {
-      if (
-        wall.position.x <= fleas[i].position.x + fleas[i].width &&
-        wall.position.x + wall.width >= fleas[i].position.x &&
-        wall.position.y === fleas[i].position.y + fleas[i].height
-      ) {
-        wallCollisions.top = true;
-      }
-
-      if (
-        wall.position.x + wall.width === fleas[i].position.x &&
-        wall.position.y <= fleas[i].position.y &&
-        wall.position.y + wall.height >= fleas[i].position.y + fleas[i].height
-      ) {
-        wallCollisions.right = true;
-      }
-
-      if (
-        wall.position.x === fleas[i].position.x + fleas[i].width &&
-        wall.position.y <= fleas[i].position.y &&
-        wall.position.y + wall.height >= fleas[i].position.y + fleas[i].height
-      ) {
-        wallCollisions.left = true;
-      }
+      wallCollisions.push(Collision.getRectRectCollision(wall, fleas[i]));
     });
 
     const rightRampCollisions = {
@@ -184,18 +161,25 @@ function runAnimation() {
     }
 
     // cancel forward movement when falling
-    if (
-      !wallCollisions.top &&
-      !wallCollisions.left &&
-      !wallCollisions.right &&
-      !rightRampCollisions.inside
-    ) {
+    if (!wallCollisions.some((col) => col.top)) {
       fleas[i].velocity.x = 0;
     }
 
-    // cancel gravity when on top of a wall
-    if (wallCollisions.top) {
-      fleas[i].velocity.y = 0;
+    for (let j = 0; j < wallCollisions.length; j++) {
+      // cancel gravity when on top of a wall
+      if (wallCollisions[j].top) {
+        fleas[i].velocity.y = 0;
+      }
+
+      // bounce off left side of wall and go backwards
+      if (wallCollisions[j].left) {
+        fleas[i].velocity.x = -1;
+      }
+
+      // bounce off right side of wall and go forwards
+      if (wallCollisions[j].right) {
+        fleas[i].velocity.x = 1;
+      }
     }
 
     // if hitting the left side of a right-ramp, go up
@@ -216,16 +200,6 @@ function runAnimation() {
 
     if (fleas[i].goingUpRightRamp === true) {
       fleas[i].velocity.y = -1;
-      fleas[i].velocity.x = 1;
-    }
-
-    // bounce off left side of wall and go backwards
-    if (wallCollisions.left) {
-      fleas[i].velocity.x = -1;
-    }
-
-    // bounce off right side of wall and go forwards
-    if (wallCollisions.right) {
       fleas[i].velocity.x = 1;
     }
 
