@@ -7,14 +7,15 @@ export class Button extends Body {
    * @param {number} width
    * @param {number} height
    * @param {string} text
+   * @param {Function} pressFunction
    */
-  constructor(position, width, height, text) {
+  constructor(position, width, height, text, pressFunction) {
     super(position, width, height);
 
     this.text = text;
+    this.pressFunction = pressFunction;
 
     this.isPressed = false;
-    this.shape = null;
   }
 
   /**

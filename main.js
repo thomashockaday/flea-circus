@@ -35,14 +35,21 @@ let canvas;
 let ctx;
 
 const pointer = new Vector(0, 0);
+const entrance = new Entrance(
+  new Vector(TILE_SIZE, TILE_SIZE),
+  TILE_SIZE,
+  TILE_SIZE,
+  "down"
+);
 
-const buttons = {};
-
+/**
+ * @type {Button[]}
+ */
+const buttons = [];
 /**
  * @type {RightRamp[]}
  */
 const rightRamps = [];
-
 /**
  * @type {Wall[]}
  */
@@ -62,13 +69,6 @@ const walls = [
   new Wall(new Vector(TILE_SIZE * 5, TILE_SIZE * 7), TILE_SIZE, TILE_SIZE),
   new Wall(new Vector(0, TILE_SIZE * 8), TILE_SIZE * 5, TILE_SIZE),
 ];
-
-const entrance = new Entrance(
-  new Vector(TILE_SIZE, TILE_SIZE),
-  TILE_SIZE,
-  TILE_SIZE,
-  "down"
-);
 /**
  * @type {Flea[]}
  */
@@ -250,9 +250,9 @@ function runAnimation() {
     }
   });
 
-  buttons.startButton.draw(ctx);
-  buttons.pauseButton.draw(ctx);
-  buttons.addRightRampButton.draw(ctx);
+  buttons.forEach((button) => {
+    button.draw(ctx);
+  });
 
   frameId = window.requestAnimationFrame(runAnimation);
 }
@@ -264,23 +264,8 @@ function addInteractionHandling() {
       pointer.x = event.offsetX;
       pointer.y = event.offsetY;
 
-      buttons.startButton.isPressed = Collision.isPointInRect(
-        pointer,
-        buttons.startButton
-      );
-
-      buttons.pauseButton.isPressed = Collision.isPointInRect(
-        pointer,
-        buttons.pauseButton
-      );
-
-      buttons.addRightRampButton.isPressed = Collision.isPointInRect(
-        pointer,
-        buttons.addRightRampButton
-      );
-
-      if (buttons.pauseButton.isPressed) {
-        buttons.pauseButton.text = paused ? "Pause" : "Play";
+      for (let i = 0; i < buttons.length; i++) {
+        buttons[i].isPressed = Collision.isPointInRect(pointer, buttons[i]);
       }
     },
     false
@@ -292,25 +277,8 @@ function addInteractionHandling() {
       pointer.x = event.offsetX;
       pointer.y = event.offsetY;
 
-      if (buttons.startButton.isPressed) {
-        buttons.startButton.isPressed = Collision.isPointInRect(
-          pointer,
-          buttons.startButton
-        );
-      }
-
-      if (buttons.pauseButton.isPressed) {
-        buttons.pauseButton.isPressed = Collision.isPointInRect(
-          pointer,
-          buttons.pauseButton
-        );
-      }
-
-      if (buttons.addRightRampButton.isPressed && !addingRightRamp) {
-        buttons.addRightRampButton.isPressed = Collision.isPointInRect(
-          pointer,
-          buttons.addRightRampButton
-        );
+      for (let i = 0; i < buttons.length; i++) {
+        buttons[i].isPressed = Collision.isPointInRect(pointer, buttons[i]);
       }
     },
     false
@@ -322,39 +290,13 @@ function addInteractionHandling() {
       pointer.x = event.offsetX;
       pointer.y = event.offsetY;
 
-      // start
-      buttons.startButton.isPressed = Collision.isPointInRect(
-        pointer,
-        buttons.startButton
-      );
+      for (let i = 0; i < buttons.length; i++) {
+        buttons[i].isPressed = Collision.isPointInRect(pointer, buttons[i]);
 
-      if (buttons.startButton.isPressed && !paused) {
-        levelStarted = true;
-      }
-
-      buttons.startButton.isPressed = false;
-
-      // pause
-      buttons.pauseButton.isPressed = Collision.isPointInRect(
-        pointer,
-        buttons.pauseButton
-      );
-
-      if (buttons.pauseButton.isPressed) {
-        if (paused) {
-          startAnimation();
-        } else {
-          pauseAnimation();
+        if (buttons[i].isPressed) {
+          buttons[i].pressFunction();
         }
       }
-
-      buttons.pauseButton.isPressed = false;
-
-      // add right ramp
-      buttons.addRightRampButton.isPressed = Collision.isPointInRect(
-        pointer,
-        buttons.addRightRampButton
-      );
 
       if (
         addingRightRamp &&
@@ -371,10 +313,9 @@ function addInteractionHandling() {
             TILE_SIZE
           )
         );
-      }
 
-      addingRightRamp = buttons.addRightRampButton.isPressed;
-      buttons.addRightRampButton.isPressed = false;
+        addingRightRamp = false;
+      }
     },
     false
   );
@@ -390,23 +331,49 @@ function init() {
     fleas.push(new Flea(new Vector(0, 0), TILE_SIZE / 8, TILE_SIZE / 8));
   }
 
-  buttons.startButton = new Button(
-    new Vector(0, TILE_SIZE * 15),
-    TILE_SIZE * 3,
-    TILE_SIZE * 1.5,
-    "Start"
+  buttons.push(
+    new Button(
+      new Vector(0, TILE_SIZE * 15),
+      TILE_SIZE * 3,
+      TILE_SIZE * 1.5,
+      "Start",
+      function () {
+        if (!paused) {
+          levelStarted = true;
+        }
+      }
+    )
   );
-  buttons.pauseButton = new Button(
-    new Vector(TILE_SIZE * 4, TILE_SIZE * 15),
-    TILE_SIZE * 3,
-    TILE_SIZE * 1.5,
-    "Pause"
+  buttons.push(
+    new Button(
+      new Vector(TILE_SIZE * 4, TILE_SIZE * 15),
+      TILE_SIZE * 3,
+      TILE_SIZE * 1.5,
+      "Pause",
+      function () {
+        if (this.isPressed) {
+          this.text = paused ? "Pause" : "Play";
+          this.draw(ctx);
+        }
+
+        if (paused) {
+          startAnimation();
+        } else {
+          pauseAnimation();
+        }
+      }
+    )
   );
-  buttons.addRightRampButton = new Button(
-    new Vector(TILE_SIZE * 8, TILE_SIZE * 15),
-    TILE_SIZE * 3,
-    TILE_SIZE * 1.5,
-    "/"
+  buttons.push(
+    new Button(
+      new Vector(TILE_SIZE * 8, TILE_SIZE * 15),
+      TILE_SIZE * 3,
+      TILE_SIZE * 1.5,
+      "/",
+      function () {
+        addingRightRamp = true;
+      }
+    )
   );
 
   addInteractionHandling();
