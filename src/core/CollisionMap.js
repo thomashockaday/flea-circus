@@ -4,5 +4,6 @@ export class CollisionMap {
     this.right = false;
     this.bottom = false;
     this.left = false;
+    this.inside = false;
   }
 }
