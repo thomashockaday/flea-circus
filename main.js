@@ -190,7 +190,12 @@ function runAnimation() {
   ctx.canvas.width = window.innerWidth;
   ctx.canvas.height = window.innerHeight;
 
-  // main game rendering
+  draw();
+
+  frameId = window.requestAnimationFrame(runAnimation);
+}
+
+function draw() {
   ctx.fillStyle = "#000";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -233,8 +238,6 @@ function runAnimation() {
   buttons.forEach((button) => {
     button.draw(ctx);
   });
-
-  frameId = window.requestAnimationFrame(runAnimation);
 }
 
 function addInteractionHandling() {
