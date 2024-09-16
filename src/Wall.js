@@ -1,6 +1,6 @@
-import { Body } from "./core/Body";
+import { Box } from "./core/Box";
 
-export class Wall extends Body {
+export class Wall extends Box {
   /**
    * @param {CanvasRenderingContext2D} ctx
    */

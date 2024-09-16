@@ -1,11 +1,11 @@
-import { Body } from "./Body";
+import { Box } from "./Box";
 import { CollisionMap } from "./CollisionMap";
 import { Vector } from "./Vector";
 
 export class Collision {
   /**
    * @param {Vector} point
-   * @param {Body} rect
+   * @param {Box} rect
    * @returns {boolean}
    */
   static isPointInRect(point, rect) {
@@ -18,8 +18,8 @@ export class Collision {
   }
 
   /**
-   * @param {Body} rect1
-   * @param {Body} rect2
+   * @param {Box} rect1
+   * @param {Box} rect2
    * @returns {CollisionMap}
    */
   static getRectRectCollision(rect1, rect2) {

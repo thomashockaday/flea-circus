@@ -1,6 +1,6 @@
-import { Body } from "./core/Body";
+import { Box } from "./core/Box";
 
-export class RightRamp extends Body {
+export class RightRamp extends Box {
   /**
    * @param {CanvasRenderingContext2D} ctx
    */

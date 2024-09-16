@@ -1,7 +1,7 @@
 import { Flea } from "./Flea";
-import { Body } from "./core/Body";
+import { Box } from "./core/Box";
 
-export class Entrance extends Body {
+export class Entrance extends Box {
   constructor(position, width, height, direction) {
     super(position, width, height);
 

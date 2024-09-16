@@ -1,6 +1,6 @@
 import { Vector } from "./Vector";
 
-export class Body {
+export class Box {
   /**
    * @param {Vector} position
    * @param {number} width

@@ -1,7 +1,7 @@
-import { Body } from "./core/Body";
+import { Box } from "./core/Box";
 import { Vector } from "./core/Vector";
 
-export class Button extends Body {
+export class Button extends Box {
   /**
    * @param {Vector} position
    * @param {number} width
