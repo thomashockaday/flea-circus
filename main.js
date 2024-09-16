@@ -183,8 +183,7 @@ function runAnimation() {
       fleas[i].velocity.x = 1;
     }
 
-    fleas[i].position.x += fleas[i].velocity.x;
-    fleas[i].position.y += fleas[i].velocity.y;
+    fleas[i].position = fleas[i].position.add(fleas[i].velocity);
   }
 
   ctx.canvas.width = window.innerWidth;
