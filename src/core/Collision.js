@@ -6,7 +6,6 @@ export class Collision {
   /**
    * @param {Vector} point
    * @param {Box} rect
-   * @returns {boolean}
    */
   static isPointInRect(point, rect) {
     return (
@@ -20,7 +19,6 @@ export class Collision {
   /**
    * @param {Box} rect1
    * @param {Box} rect2
-   * @returns {CollisionMap}
    */
   static getRectRectCollision(rect1, rect2) {
     const collisionMap = new CollisionMap();

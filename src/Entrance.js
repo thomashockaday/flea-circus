@@ -1,7 +1,14 @@
 import { Flea } from "./Flea";
 import { Box } from "./core/Box";
+import { Vector } from "./core/Vector";
 
 export class Entrance extends Box {
+  /**
+   * @param {Vector} position
+   * @param {number} width
+   * @param {number} height
+   * @param {string} direction
+   */
   constructor(position, width, height, direction) {
     super(position, width, height);
 
